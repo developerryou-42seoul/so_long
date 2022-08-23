@@ -6,7 +6,7 @@
 /*   By: sryou <sryou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 16:35:55 by sryou             #+#    #+#             */
-/*   Updated: 2022/08/23 14:48:32 by sryou            ###   ########.fr       */
+/*   Updated: 2022/08/23 16:09:49 by sryou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define SO_LONG_H
 
 # include "./Libft/libft.h"
+# include <OpenGL/gl3.h>
 # include "./mlx/mlx.h"
 # include "./get_next_line.h"
 # include <fcntl.h>
@@ -36,18 +37,56 @@ typedef struct s_img
 	void	*exit;
 }	t_img;
 
+typedef struct s_mlx_img_list
+{
+	int						width;
+	int						height;
+	char					*buffer;
+	GLfloat					vertexes[8];
+	struct s_mlx_img_list	*next;
+}	t_mlx_img_list;
+
+typedef struct s_mlx_img_ctx
+{
+	GLuint					texture;
+	GLuint					vbuffer;
+	t_mlx_img_list			*img;
+	struct s_mlx_img_ctx	*next;
+}	t_mlx_img_ctx;
+
+typedef struct s_mlx_win_list
+{
+	void					*winid;
+	t_mlx_img_ctx			*img_list;
+	int						nb_flush;
+	int						pixmgt;
+	struct s_mlx_win_list	*next;
+}	t_mlx_win_list;
+
+typedef struct mlx_ptr
+{
+	void			*appid;
+	t_mlx_win_list	*win_list;
+	t_mlx_img_list	*img_list;
+	void			(*loop_hook)(void *);
+	void			*loop_hook_data;
+	void			*loop_timer;
+	t_mlx_img_list	*font;
+	int				main_loop_active;
+}	t_mlx_ptr;
+
 typedef struct s_game
 {
-	void	*mlx;
-	void	*win;
-	t_img	img;
-	int		width;
-	int		height;
-	char	*map;
-	int		cord_user;
-	int		current_move;
-	int		num_item;
-	int		collected_item;
+	t_mlx_ptr	*mlx;
+	void		*win;
+	t_img		img;
+	int			width;
+	int			height;
+	char		*map;
+	int			cord_user;
+	int			current_move;
+	int			num_item;
+	int			collected_item;
 }	t_game;
 
 t_game	*init_game(char *map);

@@ -6,17 +6,19 @@
 /*   By: sryou <sryou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 15:47:24 by sryou             #+#    #+#             */
-/*   Updated: 2022/08/23 15:09:23 by sryou            ###   ########.fr       */
+/*   Updated: 2022/08/23 15:59:03 by sryou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	read_map_loop(char *ln, int fd, t_game *game)
+void	read_map_loop(int fd, t_game *game)
 {
-	int	len;
+	char	*ln;
+	char	*temp;
+	int		len;
 
-	while (ln)
+	while (1)
 	{
 		game->height++;
 		ln = get_next_line(fd);
@@ -27,8 +29,13 @@ void	read_map_loop(char *ln, int fd, t_game *game)
 				ln[--len] = '\0';
 			if (len != game->width)
 				throw_error("MAP ERROR | Map is not Rectangular.", game);
-			game->map = ft_strjoin(game->map, ln);
+			temp = ft_strjoin(game->map, ln);
+			free(game->map);
+			free(ln);
+			game->map = temp;
 		}
+		else
+			return ;
 	}
 }
 
@@ -47,7 +54,8 @@ void	read_map(char *map, t_game *game)
 		ln[--len] = '\0';
 	game->width = len;
 	game->map = ft_strdup(ln);
-	read_map_loop(ln, fd, game);
+	free(ln);
+	read_map_loop(fd, game);
 }
 
 void	check_valid_map(int num_user, int num_exit, \

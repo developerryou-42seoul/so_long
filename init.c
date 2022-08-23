@@ -6,7 +6,7 @@
 /*   By: sryou <sryou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 12:25:41 by sryou             #+#    #+#             */
-/*   Updated: 2022/08/23 15:00:24 by sryou            ###   ########.fr       */
+/*   Updated: 2022/08/23 15:27:37 by sryou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ void	init_game_zero(t_game *game)
 	game->collected_item = 0;
 	game->current_move = 0;
 	game->cord_user = 0;
+	game->img.exit = 0;
+	game->img.grass = 0;
+	game->img.item = 0;
+	game->img.user = 0;
+	game->img.wall = 0;
 }
 
 t_game	*init_game(char *map)

@@ -6,7 +6,7 @@
 /*   By: sryou <sryou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 12:21:47 by sryou             #+#    #+#             */
-/*   Updated: 2022/08/23 14:24:58 by sryou            ###   ########.fr       */
+/*   Updated: 2022/08/23 16:02:24 by sryou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,32 @@ void	throw_error(char *message, t_game *game)
 	quit(game, 1);
 }
 
+void	free_img(t_game *game)
+{
+	if (game->img.exit)
+		mlx_destroy_image(game->mlx, game->img.exit);
+	if (game->img.grass)
+		mlx_destroy_image(game->mlx, game->img.grass);
+	if (game->img.item)
+		mlx_destroy_image(game->mlx, game->img.item);
+	if (game->img.user)
+		mlx_destroy_image(game->mlx, game->img.user);
+	if (game->img.wall)
+		mlx_destroy_image(game->mlx, game->img.wall);
+}
+
 void	free_game(t_game *game)
 {
 	if (game)
 	{
-		if (game->mlx && game->win)
-			mlx_destroy_window(game->mlx, game->win);
+		free_img(game);
+		if (game->mlx)
+		{
+			if (game->win)
+				mlx_destroy_window(game->mlx, game->win);
+			mlx_destroy_image(game->mlx, game->mlx->font);
+			free(game->mlx);
+		}
 		if (game->map)
 			free(game->map);
 		free(game);
